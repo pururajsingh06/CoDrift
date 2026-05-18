@@ -25,6 +25,8 @@ app.use("/rooms", roomRoutes);
 app.use("/user", userRoutes);
 app.use("/friends", friendsRoutes);
 
-app.listen(3000, () => {
-  console.log("API server running on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`API server running on port ${PORT}`);
 });

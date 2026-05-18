@@ -30,6 +30,8 @@ wss.on("connection", (conn, req) => {
   setupWSConnection(conn, req);
 });
 
-server.listen(1234, () => {
-  console.log("Yjs WebSocket server with LevelDB persistence running on ws://localhost:1234");
+const PORT = process.env.PORT || 1234;
+
+server.listen(PORT, () => {
+  console.log(`Yjs WebSocket server with LevelDB persistence running on port ${PORT}`);
 });
