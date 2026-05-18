@@ -514,8 +514,11 @@ export default function FileExplorer({
 
     const signalingMap = doc.getMap("voice-signaling");
 
-    const handleSignaling = (event) => {
-      signalingMap.forEach((val, key) => {
+    const processSignalKeys = (keys) => {
+      keys.forEach((key) => {
+        const val = signalingMap.get(key);
+        if (!val) return;
+
         const parts = key.split(':');
         if (parts[0] !== 'signal' || parts.length < 3) return;
 
@@ -535,6 +538,19 @@ export default function FileExplorer({
           }
         }
       });
+    };
+
+    // Process initial signals
+    processSignalKeys(Array.from(signalingMap.keys()));
+
+    const handleSignaling = (event) => {
+      const changedKeys = [];
+      event.changes.keys.forEach((change, key) => {
+        if (change.action === 'add' || change.action === 'update') {
+          changedKeys.push(key);
+        }
+      });
+      processSignalKeys(changedKeys);
     };
 
     signalingMap.observe(handleSignaling);
