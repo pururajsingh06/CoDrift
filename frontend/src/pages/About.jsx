@@ -26,13 +26,13 @@ const About = () => {
     <div className="min-h-screen bg-[#0d1117] text-white overflow-hidden relative">
       <Navbar />
 
-      {/* Decorative Glow Elements */}
+      {}
       <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-green-500/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 relative z-10">
         
-        {/* Hero Section */}
+        {}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,7 +54,7 @@ const About = () => {
           </p>
         </motion.div>
 
-        {/* Core Pillars */}
+        {}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -92,7 +92,7 @@ const About = () => {
           ))}
         </motion.div>
 
-        {/* Tech Stack Showcase */}
+        {}
         <div className="bg-[#161b22] border border-white/5 rounded-3xl p-8 sm:p-12 mb-24 relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-[80px] pointer-events-none" />
           

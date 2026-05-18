@@ -12,7 +12,7 @@ const isPlaceholderCredentials = (user, pass) => {
   );
 };
 
-// Generates transporter dynamically depending on credentials configuration and validation
+
 const getTransporter = async () => {
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
@@ -34,7 +34,7 @@ const getTransporter = async () => {
     };
   }
 
-  // Create real SMTP transporter
+  
   const realTransporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT || '587', 10),
@@ -42,7 +42,7 @@ const getTransporter = async () => {
     auth: { user, pass },
   });
 
-  // Verify connection, if fails, fallback to Ethereal
+  
   try {
     await realTransporter.verify();
     return { transporter: realTransporter, isTest: false };
@@ -64,11 +64,7 @@ const getTransporter = async () => {
   }
 };
 
-/**
- * Sends a welcome email to the newly registered user.
- * @param {string} toEmail - The recipient's email address.
- * @param {string} userName - The recipient's name.
- */
+
 const sendWelcomeEmail = async (toEmail, userName) => {
   try {
     const { transporter, isTest } = await getTransporter();
@@ -117,12 +113,7 @@ const sendWelcomeEmail = async (toEmail, userName) => {
   }
 };
 
-/**
- * Sends a general login security alert email to the user.
- * @param {string} toEmail - The recipient's email address.
- * @param {string} userName - The recipient's name.
- * @param {string} method - The login method used (e.g., 'Password', 'Google', 'GitHub').
- */
+
 const sendLoginNotification = async (toEmail, userName, method = 'Password') => {
   try {
     const { transporter, isTest } = await getTransporter();
@@ -155,19 +146,12 @@ const sendLoginNotification = async (toEmail, userName, method = 'Password') => 
   }
 };
 
-/**
- * Sends a welcome/login notification email to the user (OAuth backwards compatibility).
- */
+
 const sendOAuthLoginNotification = async (toEmail, userName, provider) => {
   return sendLoginNotification(toEmail, userName, provider);
 };
 
-/**
- * Sends a password reset recovery email to the user.
- * @param {string} toEmail - The recipient's email address.
- * @param {string} userName - The recipient's name.
- * @param {string} resetUrl - The password reset URL link.
- */
+
 const sendPasswordResetEmail = async (toEmail, userName, resetUrl) => {
   try {
     const { transporter, isTest } = await getTransporter();

@@ -9,7 +9,7 @@ import Avatar from '../components/ui/Avatar';
 const Friends = () => {
   const navigate = useNavigate();
   const { token } = useAuthStore();
-  const [activeTab, setActiveTab] = useState('friends'); // 'friends', 'pending', 'search'
+  const [activeTab, setActiveTab] = useState('friends'); 
   
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -43,7 +43,7 @@ const Friends = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      // Filter out users who are already friends or have pending requests
+      
       const friendIds = friends.map(f => f.id);
       const pendingIds = pendingRequests.map(r => r.user.id);
       const filtered = res.data.filter(u => !friendIds.includes(u.id) && !pendingIds.includes(u.id));
@@ -60,7 +60,7 @@ const Friends = () => {
       await axios.post('http://localhost:3000/friends/request', { receiverId }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      // Remove from search results
+      
       setSearchResults(prev => prev.filter(u => u.id !== receiverId));
       alert('Friend request sent!');
     } catch (err) {
@@ -109,7 +109,7 @@ const Friends = () => {
         </div>
 
         <div className="bg-[#161b22] border border-white/5 rounded-2xl overflow-hidden shadow-xl">
-          {/* Tabs */}
+          {}
           <div className="flex border-b border-white/5">
             <button 
               onClick={() => setActiveTab('friends')}
@@ -135,7 +135,7 @@ const Friends = () => {
           </div>
 
           <div className="p-6">
-            {/* Friends Tab */}
+            {}
             {activeTab === 'friends' && (
               <div className="space-y-4">
                 {friends.length === 0 ? (

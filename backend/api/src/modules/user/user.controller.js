@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Get profile
+
 router.get('/profile', verifyToken, async (req, res) => {
   try {
     const user = await prisma.user.findUnique({
@@ -26,7 +26,7 @@ router.get('/profile', verifyToken, async (req, res) => {
   }
 });
 
-// Search users
+
 router.get('/search', verifyToken, async (req, res) => {
   try {
     const { q } = req.query;
@@ -55,7 +55,7 @@ router.get('/search', verifyToken, async (req, res) => {
   }
 });
 
-// Update profile
+
 router.put('/profile', verifyToken, async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -63,7 +63,7 @@ router.put('/profile', verifyToken, async (req, res) => {
     const updateData = {};
     if (name) updateData.name = name;
     if (email) {
-      // Check if email already exists for another user
+      
       const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser && existingUser.id !== req.user.id) {
         return res.status(409).json({ error: 'Email is already in use by another account' });
@@ -81,7 +81,7 @@ router.put('/profile', verifyToken, async (req, res) => {
       data: updateData,
     });
     
-    // Generate new token with updated payload
+    
     const token = jwt.sign(
       { id: updatedUser.id, email: updatedUser.email, name: updatedUser.name, avatar: updatedUser.avatar },
       JWT_SECRET,

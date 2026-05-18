@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Terminal, Play } from 'lucide-react';
 
 export default function OutputPanel({ output, files, doc }) {
-  const [activeTab, setActiveTab] = useState('output'); // 'output', 'git', or 'powershell'
+  const [activeTab, setActiveTab] = useState('output'); 
   
-  // Git terminal states
+  
   const [inputVal, setInputVal] = useState("");
   const [history, setHistory] = useState([
     "CoDrift Interactive Git Terminal v1.0.0",
@@ -21,7 +21,7 @@ export default function OutputPanel({ output, files, doc }) {
   const terminalEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // PowerShell terminal states
+  
   const [psInputVal, setPsInputVal] = useState("");
   const [psHistory, setPsHistory] = useState([
     "Windows PowerShell",
@@ -37,21 +37,21 @@ export default function OutputPanel({ output, files, doc }) {
   const psTerminalEndRef = useRef(null);
   const psInputRef = useRef(null);
 
-  // Auto-scroll Git Terminal
+  
   useEffect(() => {
     if (terminalEndRef.current) {
       terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [history]);
 
-  // Auto-scroll PowerShell Terminal
+  
   useEffect(() => {
     if (psTerminalEndRef.current) {
       psTerminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [psHistory]);
 
-  // Load Initial CWD from Local Process on Startup
+  
   useEffect(() => {
     const initPs = async () => {
       try {
@@ -457,7 +457,7 @@ export default function OutputPanel({ output, files, doc }) {
 
   return (
     <div className="h-64 bg-[#0d1117] border-t border-gray-800 flex flex-col flex-shrink-0 relative group">
-      {/* Tabs */}
+      {}
       <div className="px-5 bg-[#161b22] flex items-center justify-between border-b border-gray-800/80">
         <div className="flex space-x-6 h-10 items-center">
           <button 
@@ -498,7 +498,7 @@ export default function OutputPanel({ output, files, doc }) {
         </div>
       </div>
       
-      {/* Content */}
+      {}
       <div className="flex-1 overflow-auto font-mono text-[13px] leading-relaxed bg-[#0d1117] shadow-inner p-5">
         {activeTab === 'output' && (
           <pre className="whitespace-pre-wrap break-words text-green-400">{output || "Waiting for execution..."}</pre>

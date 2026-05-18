@@ -21,7 +21,7 @@ passport.use(
         });
 
         if (user) {
-          // Sync profile photo on login if it changed
+          
           if (avatar && user.avatar !== avatar) {
             user = await prisma.user.update({
               where: { id: user.id },
@@ -29,18 +29,18 @@ passport.use(
             });
           }
         } else {
-          // Check if user with same email exists
+          
           const email = profile.emails[0].value;
           user = await prisma.user.findUnique({ where: { email } });
 
           if (user) {
-            // Update existing user with googleId and avatar
+            
             user = await prisma.user.update({
               where: { email },
               data: { googleId: profile.id, avatar },
             });
           } else {
-            // Create new user
+            
             user = await prisma.user.create({
               data: {
                 email,
@@ -52,7 +52,7 @@ passport.use(
           }
         }
         
-        // Send login notification email asynchronously (do not await to avoid blocking login)
+        
         sendOAuthLoginNotification(user.email, user.name, 'Google');
         
         return done(null, user);
@@ -78,7 +78,7 @@ passport.use(
         });
 
         if (user) {
-          // Sync profile photo on login if it changed
+          
           if (avatar && user.avatar !== avatar) {
             user = await prisma.user.update({
               where: { id: user.id },
@@ -106,7 +106,7 @@ passport.use(
           }
         }
 
-        // Send login notification email asynchronously
+        
         sendOAuthLoginNotification(user.email, user.name, 'GitHub');
 
         return done(null, user);

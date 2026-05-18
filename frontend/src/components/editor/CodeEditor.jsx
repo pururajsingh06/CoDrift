@@ -83,10 +83,10 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
   const handleMount = (editor, monaco) => {
     registerSnippets(monaco);
 
-    // Extract the text content for the specific file from the shared document
+    
     const yText = doc.getText(activeFile);
 
-    // User awareness state is now managed by EditorPage
+    
 
     provider.awareness.on("change", () => {
       const states = Array.from(provider.awareness.getStates().entries());
@@ -148,7 +148,7 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
   useEffect(() => {
     return () => {
       if (bindingRef.current) bindingRef.current.destroy();
-      // DO NOT destroy provider or doc here, as they are managed by EditorPage
+      
     };
   }, []);
 

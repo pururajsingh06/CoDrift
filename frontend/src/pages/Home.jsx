@@ -65,9 +65,9 @@ const Home = () => {
     <div className="bg-[#0d1117] min-h-screen text-white overflow-hidden">
       <Navbar />
 
-      {/* Hero Section */}
+      {}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* Background Gradients */}
+        {}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none">
           <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-green-500/10 rounded-full blur-[120px]" />
           <div className="absolute bottom-[10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px]" />
@@ -134,7 +134,7 @@ const Home = () => {
             </motion.div>
           </div>
 
-          {/* Editor Preview Mockup */}
+          {}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -203,7 +203,7 @@ const Home = () => {
               </div>
             </div>
             
-            {/* Floating Badges */}
+            {}
             <motion.div 
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity }}
@@ -222,7 +222,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {}
       <section className="py-24 bg-[#0d1117] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
@@ -252,7 +252,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-green-600/20 to-emerald-600/5 border border-green-500/20 rounded-3xl p-12 text-center relative overflow-hidden">

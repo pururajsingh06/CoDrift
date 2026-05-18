@@ -144,10 +144,10 @@ export default function FileExplorer({
 }) {
   const [joinedVoice, setJoinedVoice] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [remoteTracks, setRemoteTracks] = useState({}); // { [peerId]: MediaStream }
+  const [remoteTracks, setRemoteTracks] = useState({}); 
   const [showActiveUsers, setShowActiveUsers] = useState(true);
 
-  // GitHub Import States
+  
   const [showGithubModal, setShowGithubModal] = useState(false);
   const [githubUrl, setGithubUrl] = useState("");
   const [githubBranch, setGithubBranch] = useState("");
@@ -249,22 +249,22 @@ export default function FileExplorer({
   };
 
   const localStream = useRef(null);
-  const peerConnections = useRef({}); // { [peerId]: RTCPeerConnection }
+  const peerConnections = useRef({}); 
   const localAudioContext = useRef(null);
   const localAnalyser = useRef(null);
   const localSpeakingInterval = useRef(null);
 
-  // Fetch the local user details
+  
   const localUser = useMemo(() => {
     return provider?.awareness?.getLocalState()?.user;
   }, [provider, activeUsers]);
 
-  // Get all users in the voice channel
+  
   const voiceUsers = useMemo(() => {
     return activeUsers.filter(u => u.inVoiceChannel);
   }, [activeUsers]);
 
-  // Track previous voice users to trigger chimes dynamically
+  
   const prevVoiceUsers = useRef(null);
 
   useEffect(() => {
@@ -287,11 +287,11 @@ export default function FileExplorer({
     if (!provider || !doc) return;
 
     try {
-      // Get user audio media stream
+      
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
       localStream.current = stream;
 
-      // Initialize audio analysis for local speaking indicator
+      
       try {
         const AudioContextClass = window.AudioContext || window.webkitAudioContext;
         const audioCtx = new AudioContextClass();
@@ -313,7 +313,7 @@ export default function FileExplorer({
             sum += dataArray[i];
           }
           const average = sum / bufferLength;
-          const isSpeaking = average > 12; // speaking threshold
+          const isSpeaking = average > 12; 
 
           const currentLocalState = provider.awareness.getLocalState()?.user;
           if (currentLocalState && currentLocalState.isSpeaking !== isSpeaking) {
@@ -328,7 +328,7 @@ export default function FileExplorer({
         console.warn("Failed to initialize local audio analyzer:", err);
       }
 
-      // Update our local awareness state
+      
       const currentLocalState = provider.awareness.getLocalState()?.user;
       provider.awareness.setLocalStateField("user", {
         ...currentLocalState,
@@ -670,7 +670,7 @@ export default function FileExplorer({
       if (onUploadFiles) {
         onUploadFiles(Array.from(e.target.files));
       }
-      e.target.value = null; // reset
+      e.target.value = null; 
     }
   };
 
@@ -793,7 +793,7 @@ export default function FileExplorer({
 
   return (
     <div className="w-64 bg-[#0d1117] border-r border-gray-800 flex flex-col h-full flex-shrink-0 select-none">
-      {/* Hidden inputs */}
+      {}
       <input type="file" multiple ref={fileInputRef} onChange={handleFileUpload} className="hidden" />
       <input type="file" webkitdirectory="" directory="" multiple ref={folderInputRef} onChange={handleFileUpload} className="hidden" />
 
@@ -847,12 +847,12 @@ export default function FileExplorer({
         {renderTree(tree)}
       </div>
 
-      {/* Audio Players for Remote Streams */}
+      {}
       {Object.entries(remoteTracks).map(([peerId, stream]) => (
         <AudioPlayer key={peerId} stream={stream} />
       ))}
 
-      {/* Voice Channel Section */}
+      {}
       <div className="border-t border-gray-800 bg-[#0d1117]/80 backdrop-blur-md flex-shrink-0 p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -877,7 +877,7 @@ export default function FileExplorer({
           </button>
         ) : (
           <div className="space-y-3">
-            {/* Control Panel */}
+            {}
             <div className="flex space-x-2">
               <button
                 onClick={toggleMute}
@@ -901,7 +901,7 @@ export default function FileExplorer({
           </div>
         )}
 
-        {/* List of Connected Voice Users (Always visible) */}
+        {}
         {voiceUsers.length > 0 && (
           <div className="mt-3 pt-3 border-t border-white/5 space-y-2">
             <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest px-1">
@@ -944,7 +944,7 @@ export default function FileExplorer({
         )}
       </div>
 
-      {/* Active Users Section */}
+      {}
       <div className="border-t border-gray-800 bg-[#0d1117] flex-shrink-0">
         <div 
           onClick={() => setShowActiveUsers(!showActiveUsers)}
@@ -986,7 +986,7 @@ export default function FileExplorer({
         )}
       </div>
 
-      {/* Modals and Menus */}
+      {}
       {actionModal && (
         <ActionModal 
           title={actionModal.title}
@@ -1026,7 +1026,7 @@ export default function FileExplorer({
           }} className="w-full text-left px-4 py-2 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-colors">Delete</button>
         </div>
       )}
-      {/* GitHub Import Modal */}
+      {}
       {showGithubModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
           <div className="bg-[#161b22] border border-gray-800 w-full max-w-md rounded-2xl shadow-2xl p-6 relative overflow-hidden">
@@ -1127,7 +1127,7 @@ const playSoundEffect = (type) => {
     if (type === 'join') {
       osc.type = 'sine';
       
-      // Rising high-fidelity chime (G4 -> C5)
+      
       osc.frequency.setValueAtTime(392, now);
       gainNode.gain.setValueAtTime(0, now);
       gainNode.gain.linearRampToValueAtTime(0.15, now + 0.05);
@@ -1142,7 +1142,7 @@ const playSoundEffect = (type) => {
     } else if (type === 'leave') {
       osc.type = 'sine';
       
-      // Falling high-fidelity disconnect chime (C5 -> G4)
+      
       osc.frequency.setValueAtTime(523, now);
       gainNode.gain.setValueAtTime(0, now);
       gainNode.gain.linearRampToValueAtTime(0.12, now + 0.05);

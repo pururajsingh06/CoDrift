@@ -7,7 +7,7 @@ const ActionModal = ({ title, placeholder, initialValue = '', onSubmit, onClose 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
-      // select all text before extension if possible
+      
       const lastDot = initialValue.lastIndexOf('.');
       if (lastDot > 0) {
         inputRef.current.setSelectionRange(0, lastDot);

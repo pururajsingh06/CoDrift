@@ -23,7 +23,7 @@ const Avatar = ({ src, name, email, className = "w-8 h-8", textClassName = "text
 
     const hashString = email || name || '';
     if (!hashString) {
-      return palettes[0]; // default to emerald
+      return palettes[0]; 
     }
 
     let hash = 0;

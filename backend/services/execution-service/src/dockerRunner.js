@@ -8,7 +8,7 @@ if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
 }
 
-// Check if Docker is available
+
 const checkDocker = () => {
   return new Promise((resolve) => {
     exec("docker info", (err) => {
@@ -60,12 +60,12 @@ const runCode = async (files, mainFile) => {
     const workspaceId = `workspace-${Date.now()}`;
     const workspacePath = path.join(TEMP_DIR, workspaceId);
 
-    // Create unique workspace directory
+    
     fs.mkdirSync(workspacePath, { recursive: true });
 
-    // Write all files to the workspace
+    
     Object.keys(files).forEach((fileName) => {
-      // Basic security: prevent path traversal
+      
       const safeFileName = path.basename(fileName);
       fs.writeFileSync(path.join(workspacePath, safeFileName), files[fileName]);
     });
@@ -86,7 +86,7 @@ const runCode = async (files, mainFile) => {
     }
 
     exec(command, { timeout: 5000, cwd }, (err, stdout, stderr) => {
-      // Cleanup workspace
+      
       try { fs.rmSync(workspacePath, { recursive: true, force: true }); } catch {}
 
       if (err) return resolve(stderr || err.message);

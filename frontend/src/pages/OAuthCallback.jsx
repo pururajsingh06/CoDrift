@@ -11,12 +11,12 @@ const OAuthCallback = () => {
     const token = searchParams.get('token');
     if (token) {
       try {
-        // Decode the JWT payload (it's the second part of the token)
+        
         const payloadBase64 = token.split('.')[1];
         const decodedJson = atob(payloadBase64);
         const user = JSON.parse(decodedJson);
         
-        // Update the global auth store
+        
         setAuth(user, token);
         navigate('/dashboard');
       } catch (error) {

@@ -5,7 +5,7 @@ const { verifyToken } = require('../../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Get all rooms for the authenticated user
+
 router.get('/', verifyToken, async (req, res) => {
   try {
     const rooms = await prisma.room.findMany({
@@ -19,7 +19,7 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 
-// Create a new room
+
 router.post('/', verifyToken, async (req, res) => {
   try {
     const { id, name } = req.body;
@@ -41,12 +41,12 @@ router.post('/', verifyToken, async (req, res) => {
   }
 });
 
-// Delete a room
+
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Check if room belongs to user
+    
     const room = await prisma.room.findUnique({
       where: { id }
     });

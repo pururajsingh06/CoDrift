@@ -45,11 +45,11 @@ const Profile = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       
-      // Update auth store with new token and user data
+      
       setAuth(res.data.user, res.data.token);
       
       setMessage('Profile updated successfully!');
-      setFormData(prev => ({ ...prev, password: '' })); // clear password field
+      setFormData(prev => ({ ...prev, password: '' })); 
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.error || 'Failed to update profile');

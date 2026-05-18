@@ -14,7 +14,7 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Extract token from URL query params
+  
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get('token');
 

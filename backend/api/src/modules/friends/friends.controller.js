@@ -5,12 +5,12 @@ const { verifyToken } = require('../../middleware/auth');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Get friends and pending requests
+
 router.get('/', verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Get accepted friends
+    
     const friendships = await prisma.friendship.findMany({
       where: {
         OR: [{ senderId: userId }, { receiverId: userId }],
@@ -24,7 +24,7 @@ router.get('/', verifyToken, async (req, res) => {
 
     const friends = friendships.map(f => f.senderId === userId ? f.receiver : f.sender);
 
-    // Get pending requests received
+    
     const pendingRequests = await prisma.friendship.findMany({
       where: { receiverId: userId, status: 'PENDING' },
       include: { sender: { select: { id: true, name: true, email: true, avatar: true } } }
@@ -40,7 +40,7 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 
-// Send a friend request
+
 router.post('/request', verifyToken, async (req, res) => {
   try {
     const { receiverId } = req.body;
@@ -50,7 +50,7 @@ router.post('/request', verifyToken, async (req, res) => {
       return res.status(400).json({ error: 'Cannot send request to yourself' });
     }
 
-    // Check if friendship already exists
+    
     const existing = await prisma.friendship.findFirst({
       where: {
         OR: [
@@ -79,7 +79,7 @@ router.post('/request', verifyToken, async (req, res) => {
   }
 });
 
-// Accept a friend request
+
 router.put('/accept/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -107,7 +107,7 @@ router.put('/accept/:id', verifyToken, async (req, res) => {
   }
 });
 
-// Reject request or remove friend
+
 router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const { id } = req.params;

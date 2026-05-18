@@ -57,7 +57,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-[#0d1117] flex flex-col justify-center items-center p-4 relative overflow-hidden">
-      {/* Background Glow */}
+      {}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/5 rounded-full blur-[120px] pointer-events-none" />
       
       <motion.div 

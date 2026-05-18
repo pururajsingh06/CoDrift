@@ -67,13 +67,13 @@ const Features = () => {
     <div className="min-h-screen bg-[#0d1117] text-white relative overflow-hidden">
       <Navbar />
 
-      {/* Decorative Glow Overlays */}
+      {}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[80vw] h-[80vw] bg-green-500/5 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-[-20%] right-[-10%] w-[40vw] h-[40vw] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 relative z-10">
         
-        {/* Header Section */}
+        {}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ const Features = () => {
           </p>
         </motion.div>
 
-        {/* Features Grid */}
+        {}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -132,7 +132,7 @@ const Features = () => {
           ))}
         </motion.div>
 
-        {/* Deep Dive Feature Spotlight */}
+        {}
         <div className="bg-gradient-to-br from-[#161b22] to-[#0d1117] border border-white/10 rounded-3xl p-8 sm:p-12 mb-24 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-80 h-80 bg-green-500/5 rounded-full blur-[100px] pointer-events-none" />
           

@@ -120,19 +120,19 @@ const EditorPage = () => {
     const provider = new WebsocketProvider("ws://127.0.0.1:1234", roomId, doc);
     yjsRef.current = { doc, provider };
     
-    // Deterministic signature color based on email or name
+    
     const getSignatureColor = () => {
       const colors = [
-        '#10b981', // Emerald Green
-        '#3b82f6', // Classic Blue
-        '#8b5cf6', // Vibrant Purple/Pink
-        '#f43f5e', // Warm Rose/Red
-        '#f59e0b', // Sunny Amber/Orange
-        '#06b6d4', // Ocean Cyan/Blue
-        '#14b8a6', // Cool Teal/Emerald
-        '#7c3aed', // Deep Violet/Purple
-        '#ec4899', // Sweet Pink/Rose
-        '#d946ef', // Electric Fuchsia
+        '#10b981', 
+        '#3b82f6', 
+        '#8b5cf6', 
+        '#f43f5e', 
+        '#f59e0b', 
+        '#06b6d4', 
+        '#14b8a6', 
+        '#7c3aed', 
+        '#ec4899', 
+        '#d946ef', 
       ];
       const hashString = authUser?.email || authUser?.name || '';
       if (!hashString) {
@@ -146,7 +146,7 @@ const EditorPage = () => {
       return colors[index];
     };
 
-    // Set user in awareness
+    
     const localUser = {
       id: authUser?.id || Math.random().toString(36).substring(2, 8),
       name: authUser?.name || `User-${Math.floor(Math.random() * 1000)}`,
@@ -288,17 +288,17 @@ const EditorPage = () => {
   const handleUploadFiles = (uploadedFiles) => {
     if (!yMapRef.current || !yjsRef.current) return;
     
-    // Process up to 50 files to prevent browser hanging
+    
     const filesToProcess = uploadedFiles.slice(0, 50);
     
     filesToProcess.forEach(file => {
-      // Limit file size to 1MB to prevent Yjs doc bloating
+      
       if (file.size > 1024 * 1024) {
          console.warn(`File ${file.name} is too large (>1MB), skipping.`);
          return;
       }
 
-      // Use the relative path if available to avoid name collisions in flat structure
+      
       const fileName = file.webkitRelativePath || file.name;
       
       const language = getLanguageFromFilename(fileName);
@@ -403,7 +403,7 @@ const EditorPage = () => {
   const handleRunCode = async () => {
     if (!currentFile || !yjsRef.current) return;
     
-    // Extract the latest text content for ALL files directly from Yjs
+    
     const workspaceFiles = {};
     Object.keys(files).forEach((fileName) => {
       workspaceFiles[fileName] = yjsRef.current.doc.getText(fileName).toString();

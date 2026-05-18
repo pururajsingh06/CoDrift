@@ -103,7 +103,7 @@ const Dashboard = () => {
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
-        {/* Header Section */}
+        {}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
           <div>
             <h1 className="text-3xl font-bold mb-2">Welcome back, {user?.name || 'Developer'}</h1>
@@ -136,7 +136,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Stats Grid */}
+        {}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
             { label: 'Active Sessions', value: '12', icon: <Terminal className="text-blue-400" />, trend: '+2 this week' },
@@ -164,7 +164,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Sessions Section */}
+        {}
         <div className="bg-[#161b22] border border-white/5 rounded-2xl overflow-hidden shadow-xl">
           <div className="p-6 border-b border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
             <h2 className="text-xl font-bold flex items-center space-x-2">

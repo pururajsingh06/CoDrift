@@ -10,9 +10,9 @@ const crypto = require('crypto');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-// Router initialization
 
-// Register a new user
+
+
 router.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
@@ -21,17 +21,17 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    // Check if user exists
+    
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(409).json({ error: 'User already exists' });
     }
 
-    // Hash password
+    
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
+    
     const user = await prisma.user.create({
       data: {
         email,
@@ -40,14 +40,14 @@ router.post('/register', async (req, res) => {
       },
     });
 
-    // Generate token
+    
     const token = jwt.sign(
       { id: user.id, email: user.email, name: user.name, avatar: user.avatar },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Send welcome email asynchronously
+    
     sendWelcomeEmail(user.email, user.name);
 
     res.status(201).json({
@@ -60,7 +60,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login user
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -69,26 +69,26 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    // Find user
+    
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Check password
+    
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Generate token
+    
     const token = jwt.sign(
       { id: user.id, email: user.email, name: user.name, avatar: user.avatar },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Send login security alert asynchronously
+    
     sendLoginNotification(user.email, user.name, 'Password');
 
     res.json({
@@ -101,7 +101,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Forgot Password
+
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
@@ -113,7 +113,7 @@ router.post('/forgot-password', async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(32).toString('hex');
-    const resetPasswordExpires = new Date(Date.now() + 3600000); // 1 hour
+    const resetPasswordExpires = new Date(Date.now() + 3600000); 
 
     await prisma.user.update({
       where: { id: user.id },
@@ -134,7 +134,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 });
 
-// Reset Password
+
 router.post('/reset-password', async (req, res) => {
   try {
     const { token, newPassword } = req.body;
@@ -173,7 +173,7 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
-// Google OAuth
+
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get(
@@ -189,7 +189,7 @@ router.get(
   }
 );
 
-// GitHub OAuth
+
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 
 router.get(
