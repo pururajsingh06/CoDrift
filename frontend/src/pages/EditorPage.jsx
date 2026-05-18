@@ -118,7 +118,8 @@ const EditorPage = () => {
 
   useEffect(() => {
     const doc = new Y.Doc();
-    const provider = new WebsocketProvider("ws://127.0.0.1:1234", roomId, doc);
+    const wsUrl = API_URL.replace(/^http/, 'ws');
+    const provider = new WebsocketProvider(wsUrl, roomId, doc);
     yjsRef.current = { doc, provider };
     
     
