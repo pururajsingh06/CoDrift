@@ -4,6 +4,7 @@ import { Mail, Lock, Loader2, ArrowRight, Code2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
+import { API_URL } from '../services/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:3000/auth/login', {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });
@@ -46,7 +47,7 @@ const Login = () => {
     
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:3000/auth/forgot-password', { email });
+      const res = await axios.post(`${API_URL}/auth/forgot-password`, { email });
       setMessage(res.data.message);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to send reset link');
@@ -149,7 +150,7 @@ const Login = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <button 
-              onClick={() => window.location.href = 'http://localhost:3000/auth/google'}
+              onClick={() => window.location.href = `${API_URL}/auth/google`}
               className="flex items-center justify-center gap-3 bg-[#0d1117] border border-white/10 hover:border-white/20 text-white rounded-xl py-3 px-4 transition-all hover:bg-white/5 active:scale-[0.98]"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -161,7 +162,7 @@ const Login = () => {
               <span className="font-medium text-sm">Google</span>
             </button>
             <button 
-              onClick={() => window.location.href = 'http://localhost:3000/auth/github'}
+              onClick={() => window.location.href = `${API_URL}/auth/github`}
               className="flex items-center justify-center gap-3 bg-[#0d1117] border border-white/10 hover:border-white/20 text-white rounded-xl py-3 px-4 transition-all hover:bg-white/5 active:scale-[0.98]"
             >
               <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">

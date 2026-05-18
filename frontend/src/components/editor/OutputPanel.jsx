@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Terminal, Play } from 'lucide-react';
+import { API_URL } from '../../services/api';
 
 export default function OutputPanel({ output, files, doc }) {
   const [activeTab, setActiveTab] = useState('output'); 
@@ -55,7 +56,7 @@ export default function OutputPanel({ output, files, doc }) {
   useEffect(() => {
     const initPs = async () => {
       try {
-        const res = await fetch("http://localhost:3000/execute/powershell", {
+        const res = await fetch(`${API_URL}/execute/powershell`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ command: "", cwd: "" })
@@ -433,7 +434,7 @@ export default function OutputPanel({ output, files, doc }) {
     }
     
     try {
-      const res = await fetch("http://localhost:3000/execute/powershell", {
+      const res = await fetch(`${API_URL}/execute/powershell`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command: trimmed, cwd: psCwd })

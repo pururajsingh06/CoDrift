@@ -9,6 +9,7 @@ import TopBar from "../components/layout/TopBar";
 import EditorContainer from "../components/editor/EditorContainer";
 import OutputPanel from "../components/editor/OutputPanel";
 import useAuthStore from "../store/useAuthStore";
+import { API_URL } from "../services/api";
  
 const getLanguageFromFilename = (fileName) => {
   const ext = fileName.split('.').pop().toLowerCase();
@@ -413,7 +414,7 @@ const EditorPage = () => {
     setOutput("Running workspace...");
 
     try {
-      const response = await fetch("http://localhost:3000/execute", {
+      const response = await fetch(`${API_URL}/execute`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 

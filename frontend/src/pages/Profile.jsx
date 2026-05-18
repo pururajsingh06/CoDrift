@@ -5,6 +5,7 @@ import axios from 'axios';
 import useAuthStore from '../store/useAuthStore';
 import Navbar from '../components/layout/Navbar';
 import Avatar from '../components/ui/Avatar';
+import { API_URL } from '../services/api';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const Profile = () => {
     setError('');
 
     try {
-      const res = await axios.put('http://localhost:3000/user/profile', formData, {
+      const res = await axios.put(`${API_URL}/user/profile`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       

@@ -5,6 +5,7 @@ import axios from 'axios';
 import Navbar from '../components/layout/Navbar';
 import useAuthStore from '../store/useAuthStore';
 import Avatar from '../components/ui/Avatar';
+import { API_URL } from '../services/api';
 
 const Friends = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Friends = () => {
   const fetchFriends = async () => {
     if (!token) return;
     try {
-      const res = await axios.get('http://localhost:3000/friends', {
+      const res = await axios.get(`${API_URL}/friends`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFriends(res.data.friends || []);
@@ -39,7 +40,7 @@ const Friends = () => {
     if (!searchQuery.trim() || !token) return;
     
     try {
-      const res = await axios.get(`http://localhost:3000/user/search?q=${searchQuery}`, {
+      const res = await axios.get(`${API_URL}/user/search?q=${searchQuery}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -57,7 +58,7 @@ const Friends = () => {
   const sendRequest = async (receiverId) => {
     if (!token) return;
     try {
-      await axios.post('http://localhost:3000/friends/request', { receiverId }, {
+      await axios.post(`${API_URL}/friends/request`, { receiverId }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -72,7 +73,7 @@ const Friends = () => {
   const acceptRequest = async (requestId) => {
     if (!token) return;
     try {
-      await axios.put(`http://localhost:3000/friends/accept/${requestId}`, {}, {
+      await axios.put(`${API_URL}/friends/accept/${requestId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchFriends();
@@ -84,7 +85,7 @@ const Friends = () => {
   const rejectRequest = async (requestId) => {
     if (!token) return;
     try {
-      await axios.delete(`http://localhost:3000/friends/${requestId}`, {
+      await axios.delete(`${API_URL}/friends/${requestId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchFriends();

@@ -21,6 +21,7 @@ import ActionModal from '../components/ui/ActionModal';
 import { motion } from 'framer-motion';
 import useAuthStore from '../store/useAuthStore';
 import Navbar from '../components/layout/Navbar';
+import { API_URL } from '../services/api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Dashboard = () => {
   const fetchRooms = async () => {
     if (!user || !token) return;
     try {
-      const res = await axios.get('http://localhost:3000/rooms', {
+      const res = await axios.get(`${API_URL}/rooms`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRooms(res.data);
@@ -60,7 +61,7 @@ const Dashboard = () => {
     const roomId = Math.random().toString(36).substring(2, 8);
     try {
       if (token) {
-        await axios.post('http://localhost:3000/rooms', { id: roomId, name }, {
+        await axios.post(`${API_URL}/rooms`, { id: roomId, name }, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
@@ -77,7 +78,7 @@ const Dashboard = () => {
     if (!window.confirm('Are you sure you want to delete this session?')) return;
     try {
       if (token) {
-        await axios.delete(`http://localhost:3000/rooms/${roomId}`, {
+        await axios.delete(`${API_URL}/rooms/${roomId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
       }
