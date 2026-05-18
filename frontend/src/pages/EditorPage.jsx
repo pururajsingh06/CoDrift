@@ -87,27 +87,20 @@ const getBoilerplateForFilename = (fileName) => {
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
-const initialFiles = {
-  "index.js": {
-    name: "index.js",
-    language: "javascript",
-    content: "console.log('Hello CoDrift');",
-  },
-  "utils.js": {
-    name: "utils.js",
-    language: "javascript",
-    content: "export const add = (a, b) => a + b;",
-  },
-};
-
 const EditorPage = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
   const { user: authUser } = useAuthStore();
 
   const [files, setFiles] = useState({});
-  const [activeFile, setActiveFile] = useState("index.js");
+  const [activeFile, setActiveFile] = useState(null);
   const [activeUsers, setActiveUsers] = useState([]);
+
+  useEffect(() => {
+    if (!activeFile && Object.keys(files).length > 0) {
+      setActiveFile(Object.keys(files)[0]);
+    }
+  }, [files, activeFile]);
 
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
@@ -178,13 +171,7 @@ const EditorPage = () => {
         setFiles(currentFiles);
       } else {
         yMetadata.set("initialized", true);
-        Object.keys(initialFiles).forEach(key => {
-          yFiles.set(key, initialFiles[key]);
-          const yText = doc.getText(key);
-          if (yText.length === 0) {
-            yText.insert(0, initialFiles[key].content);
-          }
-        });
+        setFiles({});
       }
     };
 
