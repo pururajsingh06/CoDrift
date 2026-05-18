@@ -1,10 +1,8 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GitHubStrategy = require('passport-github2').Strategy;
-const { PrismaClient } = require('@prisma/client');
+const User = require('../models/User');
 const { sendOAuthLoginNotification } = require('../services/email.service');
-
-const prisma = new PrismaClient();
 
 passport.use(
   new GoogleStrategy(
@@ -16,42 +14,27 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const avatar = profile.photos && profile.photos[0] ? profile.photos[0].value : null;
-        let user = await prisma.user.findFirst({
-          where: { googleId: profile.id },
-        });
+        let user = await User.findOne({ googleId: profile.id });
 
         if (user) {
-          
           if (avatar && user.avatar !== avatar) {
-            user = await prisma.user.update({
-              where: { id: user.id },
-              data: { avatar }
-            });
+            user = await User.findByIdAndUpdate(user._id, { avatar }, { new: true });
           }
         } else {
-          
           const email = profile.emails[0].value;
-          user = await prisma.user.findUnique({ where: { email } });
+          user = await User.findOne({ email });
 
           if (user) {
-            
-            user = await prisma.user.update({
-              where: { email },
-              data: { googleId: profile.id, avatar },
-            });
+            user = await User.findByIdAndUpdate(user._id, { googleId: profile.id, avatar }, { new: true });
           } else {
-            
-            user = await prisma.user.create({
-              data: {
-                email,
-                name: profile.displayName,
-                googleId: profile.id,
-                avatar,
-              },
+            user = await User.create({
+              email,
+              name: profile.displayName,
+              googleId: profile.id,
+              avatar,
             });
           }
         }
-        
         
         sendOAuthLoginNotification(user.email, user.name, 'Google');
         
@@ -73,40 +56,28 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       try {
         const avatar = profile.photos && profile.photos[0] ? profile.photos[0].value : null;
-        let user = await prisma.user.findFirst({
-          where: { githubId: profile.id.toString() },
-        });
+        let user = await User.findOne({ githubId: profile.id.toString() });
 
         if (user) {
-          
           if (avatar && user.avatar !== avatar) {
-            user = await prisma.user.update({
-              where: { id: user.id },
-              data: { avatar }
-            });
+            user = await User.findByIdAndUpdate(user._id, { avatar }, { new: true });
           }
         } else {
           const email = profile.emails && profile.emails[0] ? profile.emails[0].value : `${profile.username}@github.com`;
-          user = await prisma.user.findUnique({ where: { email } });
+          user = await User.findOne({ email });
 
           if (user) {
-            user = await prisma.user.update({
-              where: { email },
-              data: { githubId: profile.id.toString(), avatar },
-            });
+            user = await User.findByIdAndUpdate(user._id, { githubId: profile.id.toString(), avatar }, { new: true });
           } else {
-            user = await prisma.user.create({
-              data: {
-                email,
-                name: profile.displayName || profile.username,
-                githubId: profile.id.toString(),
-                avatar,
-              },
+            user = await User.create({
+              email,
+              name: profile.displayName || profile.username,
+              githubId: profile.id.toString(),
+              avatar,
             });
           }
         }
 
-        
         sendOAuthLoginNotification(user.email, user.name, 'GitHub');
 
         return done(null, user);
@@ -123,7 +94,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await User.findById(id);
     done(null, user);
   } catch (error) {
     done(error, null);
