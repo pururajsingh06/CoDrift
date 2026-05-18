@@ -88,7 +88,7 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
 
     
 
-    provider.awareness.on("change", () => {
+    const updateCursorStyles = () => {
       const states = Array.from(provider.awareness.getStates().entries());
       let cssText = `
         .monaco-editor .view-overlays {
@@ -97,6 +97,7 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
       `;
       states.forEach(([clientId, state]) => {
         if (state.user) {
+          const safeName = state.user.name ? state.user.name.replace(/"/g, '\\"') : 'Anonymous';
           cssText += `
             .yRemoteSelection-${clientId} {
               background-color: ${state.user.color}40;
@@ -105,11 +106,12 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
               position: absolute;
               border-left: 2px solid ${state.user.color};
               box-sizing: border-box;
-              z-index: 10;
+              z-index: 9999;
+              pointer-events: none;
             }
             .yRemoteSelectionHead-${clientId}::after {
               position: absolute;
-              content: '${state.user.name}';
+              content: "${safeName}";
               background-color: ${state.user.color};
               color: #fff;
               font-family: sans-serif;
@@ -123,6 +125,7 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
               white-space: nowrap;
               pointer-events: none;
               box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+              z-index: 99999;
             }
           `;
         }
@@ -135,7 +138,10 @@ const CodeEditor = ({ activeFile, doc, provider, language }) => {
         document.head.appendChild(styleTag);
       }
       styleTag.innerHTML = cssText;
-    });
+    };
+
+    provider.awareness.on("change", updateCursorStyles);
+    updateCursorStyles();
 
     bindingRef.current = new MonacoBinding(
       yText,
