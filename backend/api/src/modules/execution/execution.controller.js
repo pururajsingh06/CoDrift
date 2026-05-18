@@ -43,7 +43,12 @@ router.post("/powershell", (req, res) => {
     }
   }
 
-  exec(`powershell.exe -Command "${cmd.replace(/"/g, '\\"')}"`, { cwd: currentCwd }, (error, stdout, stderr) => {
+  const isWin = process.platform === "win32";
+  const execCmd = isWin 
+    ? `powershell.exe -Command "${cmd.replace(/"/g, '\\"')}"`
+    : cmd;
+
+  exec(execCmd, { cwd: currentCwd }, (error, stdout, stderr) => {
     let output = "";
     if (stdout) output += stdout;
     if (stderr) output += stderr;
