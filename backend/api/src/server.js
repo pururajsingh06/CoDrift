@@ -10,6 +10,7 @@ const userRoutes = require("./modules/user/user.controller");
 const friendsRoutes = require("./modules/friends/friends.controller");
 
 const app = express();
+app.set('trust proxy', 1);
 const passport = require('./config/passport');
 
 // Connect Database
