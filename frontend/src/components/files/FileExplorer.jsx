@@ -1127,10 +1127,15 @@ const AudioPlayer = ({ stream }) => {
   return <audio ref={audioRef} autoPlay playsInline style={{ display: 'none' }} />;
 };
 
-const playSoundEffect = (type) => {
+const playSoundEffect = async (type) => {
   try {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContextClass();
+    
+    // Explicitly resume context to bypass browser autoplay restrictions
+    if (ctx.state === 'suspended') {
+      await ctx.resume();
+    }
     
     const osc = ctx.createOscillator();
     const gainNode = ctx.createGain();
@@ -1140,36 +1145,33 @@ const playSoundEffect = (type) => {
     
     const now = ctx.currentTime;
     
+    // Premium Discord-style sounds
     if (type === 'join') {
       osc.type = 'sine';
       
-      
-      osc.frequency.setValueAtTime(392, now);
+      osc.frequency.setValueAtTime(440, now); // A4
       gainNode.gain.setValueAtTime(0, now);
-      gainNode.gain.linearRampToValueAtTime(0.15, now + 0.05);
+      gainNode.gain.linearRampToValueAtTime(0.5, now + 0.05);
       
-      osc.frequency.setValueAtTime(523, now + 0.12);
-      
-      gainNode.gain.setValueAtTime(0.15, now + 0.12);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+      osc.frequency.setValueAtTime(659.25, now + 0.12); // E5
+      gainNode.gain.setValueAtTime(0.5, now + 0.12);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
       
       osc.start(now);
-      osc.stop(now + 0.5);
+      osc.stop(now + 0.6);
     } else if (type === 'leave') {
       osc.type = 'sine';
       
-      
-      osc.frequency.setValueAtTime(523, now);
+      osc.frequency.setValueAtTime(659.25, now); // E5
       gainNode.gain.setValueAtTime(0, now);
-      gainNode.gain.linearRampToValueAtTime(0.12, now + 0.05);
+      gainNode.gain.linearRampToValueAtTime(0.4, now + 0.05);
       
-      osc.frequency.setValueAtTime(392, now + 0.12);
-      
-      gainNode.gain.setValueAtTime(0.12, now + 0.12);
-      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+      osc.frequency.setValueAtTime(440, now + 0.12); // A4
+      gainNode.gain.setValueAtTime(0.4, now + 0.12);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
       
       osc.start(now);
-      osc.stop(now + 0.5);
+      osc.stop(now + 0.6);
     }
   } catch (err) {
     console.warn("Failed to play voice channel sound effect:", err);
