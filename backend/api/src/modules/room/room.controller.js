@@ -6,7 +6,12 @@ const router = express.Router();
 
 router.get('/', verifyToken, async (req, res) => {
   try {
-    const rooms = await Room.find({ userId: req.user.id }).sort({ updatedAt: -1 });
+    const rooms = await Room.find({
+      $or: [
+        { userId: req.user.id },
+        { joinedUsers: req.user.id }
+      ]
+    }).sort({ updatedAt: -1 });
     const formatted = rooms.map(r => ({
       id: r._id,
       name: r.name,
@@ -44,6 +49,37 @@ router.post('/', verifyToken, async (req, res) => {
   } catch (error) {
     console.error('Error creating room:', error);
     res.status(500).json({ error: 'Failed to create room' });
+  }
+});
+
+router.post('/:id/join', verifyToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const room = await Room.findById(id);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+
+    // Add user to joinedUsers if not already present, and not the creator
+    if (room.userId.toString() !== req.user.id) {
+      if (!room.joinedUsers) {
+        room.joinedUsers = [];
+      }
+      if (!room.joinedUsers.includes(req.user.id)) {
+        room.joinedUsers.push(req.user.id);
+        await room.save();
+      }
+    }
+
+    res.json({
+      message: 'Joined room successfully',
+      id: room._id,
+      name: room.name,
+      userId: room.userId
+    });
+  } catch (error) {
+    console.error('Error joining room:', error);
+    res.status(500).json({ error: 'Failed to join room' });
   }
 });
 

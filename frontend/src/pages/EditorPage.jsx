@@ -10,6 +10,7 @@ import EditorContainer from "../components/editor/EditorContainer";
 import OutputPanel from "../components/editor/OutputPanel";
 import useAuthStore from "../store/useAuthStore";
 import { API_URL, WS_URL } from "../services/api";
+import axios from "axios";
  
 const getLanguageFromFilename = (fileName) => {
   const ext = fileName.split('.').pop().toLowerCase();
@@ -90,7 +91,21 @@ import { saveAs } from "file-saver";
 const EditorPage = () => {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const { user: authUser } = useAuthStore();
+  const { user: authUser, token } = useAuthStore();
+
+  useEffect(() => {
+    const joinRoomInDb = async () => {
+      if (!roomId || !token) return;
+      try {
+        await axios.post(`${API_URL}/rooms/${roomId}/join`, {}, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } catch (err) {
+        console.error("Failed to register room join in database:", err);
+      }
+    };
+    joinRoomInDb();
+  }, [roomId, token]);
 
   const [files, setFiles] = useState({});
   const [activeFile, setActiveFile] = useState(null);
