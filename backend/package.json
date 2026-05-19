@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix api\" \"npm run dev --prefix realtime\"",
+    "start": "concurrently \"npm run start --prefix api\" \"npm run start --prefix realtime\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
