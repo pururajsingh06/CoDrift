@@ -70,20 +70,31 @@ const runWandbox = async (files, mainFile) => {
   const wandboxCompilers = {
     py: "cpython-head",
     cpp: "gcc-head",
-    c: "gcc-head",
-    java: "openjdk-head",
-    js: "nodejs-head"
+    c: "gcc-head-c",
+    java: "openjdk-jdk-22+36",
+    js: "nodejs-20.17.0"
   };
 
   const compiler = wandboxCompilers[ext] || wandboxCompilers['js'];
-  const mainFileContent = files[mainFile] || "";
+  
+  let mainFileContent = files[mainFile] || "";
+  if (ext === 'java') {
+    // Strip public keyword from class declaration so it compiles properly as prog.java on Wandbox
+    mainFileContent = mainFileContent.replace(/public\s+class\s+/, "class ");
+  }
   
   const secondaryFiles = Object.keys(files)
     .filter(name => name !== mainFile)
-    .map(name => ({
-      file: path.basename(name),
-      code: files[name]
-    }));
+    .map(name => {
+      let codeContent = files[name];
+      if (path.extname(name).toLowerCase() === '.java') {
+        codeContent = codeContent.replace(/public\s+class\s+/, "class ");
+      }
+      return {
+        file: path.basename(name),
+        code: codeContent
+      };
+    });
 
   const payload = {
     compiler,
