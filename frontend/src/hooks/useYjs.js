@@ -1,11 +1,13 @@
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 
+import { WS_URL } from "../services/api";
+
 export const createYjs = (roomId) => {
   const doc = new Y.Doc();
 
   const provider = new WebsocketProvider(
-    "ws://127.0.0.1:1234", 
+    WS_URL, 
     roomId,
     doc
   );

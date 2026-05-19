@@ -9,7 +9,7 @@ import TopBar from "../components/layout/TopBar";
 import EditorContainer from "../components/editor/EditorContainer";
 import OutputPanel from "../components/editor/OutputPanel";
 import useAuthStore from "../store/useAuthStore";
-import { API_URL } from "../services/api";
+import { API_URL, WS_URL } from "../services/api";
  
 const getLanguageFromFilename = (fileName) => {
   const ext = fileName.split('.').pop().toLowerCase();
@@ -111,7 +111,7 @@ const EditorPage = () => {
 
   useEffect(() => {
     const doc = new Y.Doc();
-    const provider = new WebsocketProvider("ws://127.0.0.1:1234", roomId, doc);
+    const provider = new WebsocketProvider(WS_URL, roomId, doc);
     yjsRef.current = { doc, provider };
     
     
