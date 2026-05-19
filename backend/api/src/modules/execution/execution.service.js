@@ -1,4 +1,4 @@
-const { runCode } = require("../../../../services/execution-service/src/dockerRunner");
+const { runCode } = require("./dockerRunner");
 
 class ExecutionService {
   async execute(files, mainFile) {
