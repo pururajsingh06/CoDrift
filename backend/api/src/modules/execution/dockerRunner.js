@@ -17,19 +17,19 @@ const checkDocker = () => {
   });
 };
 
-const makePistonRequest = (payload) => {
+const makeWandboxRequest = (payload) => {
   return new Promise((resolve) => {
     const dataString = JSON.stringify(payload);
     
     const options = {
-      hostname: "emkc.org",
-      path: "/api/v2/piston/execute",
+      hostname: "wandbox.org",
+      path: "/api/compile.json",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Content-Length": dataString.length,
       },
-      timeout: 10000,
+      timeout: 15000,
     };
 
     const req = https.request(options, (res) => {
@@ -38,24 +38,25 @@ const makePistonRequest = (payload) => {
       res.on("end", () => {
         try {
           const parsed = JSON.parse(body);
-          if (parsed.run) {
-            resolve(parsed.run.stdout || parsed.run.stderr || "No output");
+          const hasError = parsed.status !== "0" && parsed.status !== 0;
+          if (!hasError) {
+            resolve(parsed.program_output || parsed.program_error || "No output");
           } else {
-            resolve(parsed.message || "Execution failed");
+            resolve(parsed.program_error || parsed.compiler_error || parsed.program_output || "Execution failed");
           }
         } catch {
-          resolve("Failed to parse compilation result.");
+          resolve("Failed to parse Wandbox compilation result.");
         }
       });
     });
 
     req.on("error", (err) => {
-      resolve(`Execution error: ${err.message}`);
+      resolve(`Wandbox execution error: ${err.message}`);
     });
 
     req.on("timeout", () => {
       req.destroy();
-      resolve("Execution timed out.");
+      resolve("Wandbox execution timed out.");
     });
 
     req.write(dataString);
@@ -63,32 +64,36 @@ const makePistonRequest = (payload) => {
   });
 };
 
-const runPiston = async (files, mainFile) => {
+const runWandbox = async (files, mainFile) => {
   const ext = path.extname(mainFile).toLowerCase().replace('.', '');
   
-  const pistonLanguages = {
-    js: { language: "javascript", version: "18.15.0" },
-    py: { language: "python", version: "3.10.0" },
-    cpp: { language: "c++", version: "10.2.0" },
-    c: { language: "c", version: "10.2.0" },
-    java: { language: "java", version: "15.0.2" }
+  const wandboxCompilers = {
+    py: "cpython-head",
+    cpp: "gcc-head",
+    c: "gcc-head",
+    java: "openjdk-head",
+    js: "nodejs-head"
   };
 
-  const config = pistonLanguages[ext] || pistonLanguages['js'];
+  const compiler = wandboxCompilers[ext] || wandboxCompilers['js'];
+  const mainFileContent = files[mainFile] || "";
   
-  const pistonFiles = Object.keys(files).map(name => ({
-    name: path.basename(name),
-    content: files[name]
-  }));
+  const secondaryFiles = Object.keys(files)
+    .filter(name => name !== mainFile)
+    .map(name => ({
+      file: path.basename(name),
+      code: files[name]
+    }));
 
   const payload = {
-    language: config.language,
-    version: config.version,
-    files: pistonFiles,
-    stdin: ""
+    compiler,
+    code: mainFileContent,
+    codes: secondaryFiles,
+    stdin: "",
+    save: false
   };
 
-  return await makePistonRequest(payload);
+  return await makeWandboxRequest(payload);
 };
 
 const LANG_CONFIG = {
@@ -187,8 +192,8 @@ const runCode = async (files, mainFile) => {
           err.code === "ENOENT" ||
           err.code === 127
         ) {
-          const pistonOutput = await runPiston(files, mainFile);
-          return resolve(pistonOutput);
+          const wandboxOutput = await runWandbox(files, mainFile);
+          return resolve(wandboxOutput);
         }
         return resolve(stderr || err.message);
       }
