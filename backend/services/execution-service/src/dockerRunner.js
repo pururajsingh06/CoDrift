@@ -8,6 +8,7 @@ if (!fs.existsSync(TEMP_DIR)) {
   fs.mkdirSync(TEMP_DIR, { recursive: true });
 }
 
+
 const checkDocker = () => {
   return new Promise((resolve) => {
     exec("docker info", (err) => {
@@ -24,8 +25,8 @@ const LANG_CONFIG = {
   },
   py: {
     image: 'python:3.9-slim',
-    execCmd: (file) => `python3 ${file}`,
-    localCmd: (file) => `python3 ${file}`
+    execCmd: (file) => `python ${file}`,
+    localCmd: (file) => `python ${file}`
   },
   cpp: {
     image: 'gcc:latest',
@@ -59,9 +60,12 @@ const runCode = async (files, mainFile) => {
     const workspaceId = `workspace-${Date.now()}`;
     const workspacePath = path.join(TEMP_DIR, workspaceId);
 
+    
     fs.mkdirSync(workspacePath, { recursive: true });
 
+    
     Object.keys(files).forEach((fileName) => {
+      
       const safeFileName = path.basename(fileName);
       fs.writeFileSync(path.join(workspacePath, safeFileName), files[fileName]);
     });
@@ -81,7 +85,8 @@ const runCode = async (files, mainFile) => {
       command = config.localCmd(safeMainFile);
     }
 
-    exec(command, { timeout: 10000, cwd }, (err, stdout, stderr) => {
+    exec(command, { timeout: 5000, cwd }, (err, stdout, stderr) => {
+      
       try { fs.rmSync(workspacePath, { recursive: true, force: true }); } catch {}
 
       if (err) return resolve(stderr || err.message);

@@ -6,7 +6,6 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.2",
@@ -20,6 +19,7 @@
     "yjs": "^13.6.30"
   },
   "devDependencies": {
+    "dotenv": "^17.4.2",
     "tsx": "^4.21.0"
   }
 }
