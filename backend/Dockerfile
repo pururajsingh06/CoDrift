@@ -19,18 +19,13 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory
 WORKDIR /app
 
-# Copy all package.json files
-COPY package*.json ./
-COPY api/package*.json ./api/
-COPY realtime/package*.json ./realtime/
+# Copy the entire backend source code first
+COPY . .
 
 # Install root and workspace dependencies
 RUN npm install
 RUN npm install --prefix api
 RUN npm install --prefix realtime
-
-# Copy the entire backend source code
-COPY . .
 
 # Expose API and WebSocket ports
 EXPOSE 3000
