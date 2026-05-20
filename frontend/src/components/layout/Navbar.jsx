@@ -20,7 +20,7 @@ const Navbar = () => {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#0d1117]/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-16 relative">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <div className="bg-gradient-to-br from-green-400 to-emerald-600 p-1.5 rounded-lg">
@@ -30,11 +30,9 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <div className="hidden md:block">
-            <div className="flex items-center space-x-8">
-              <Link to="/features" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">Features</Link>
-              <Link to="/about" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">About</Link>
-            </div>
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center space-x-8">
+            <Link to="/features" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">Features</Link>
+            <Link to="/about" className="text-gray-300 hover:text-white transition-colors text-sm font-medium">About</Link>
           </div>
 
           <div className="flex items-center space-x-4">
