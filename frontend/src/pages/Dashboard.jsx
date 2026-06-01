@@ -140,9 +140,9 @@ const Dashboard = () => {
         {}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
-            { label: 'Active Sessions', value: '12', icon: <Terminal className="text-blue-400" />, trend: '+2 this week' },
-            { label: 'Collaborators', value: '48', icon: <Users className="text-purple-400" />, trend: '5 online now' },
-            { label: 'Time Coded', value: '164h', icon: <Clock className="text-green-400" />, trend: 'Avg. 4h/day' },
+            { label: 'Total Sessions', value: rooms.length.toString(), icon: <Terminal className="text-blue-400" />, trend: 'Active projects' },
+            { label: 'Account Created', value: new Date(user?.createdAt || Date.now()).toLocaleDateString(), icon: <Users className="text-purple-400" />, trend: 'Member since' },
+            { label: 'Last Activity', value: rooms.length > 0 ? new Date(rooms[0].updatedAt).toLocaleDateString() : 'N/A', icon: <Clock className="text-green-400" />, trend: 'Most recent update' },
           ].map((stat, i) => (
             <motion.div 
               key={i}
@@ -226,10 +226,9 @@ const Dashboard = () => {
                     
                     <div className="flex items-center justify-between pt-4 border-t border-white/5">
                       <div className="flex items-center space-x-4">
-                        <div className="flex -space-x-2">
-                          <div className="w-6 h-6 rounded-full bg-gray-700 border border-[#0d1117]" />
-                        </div>
-                        <span className="text-xs text-gray-400">1 active</span>
+                        <span className="text-xs text-gray-400">
+                          {session.userId === user?.id ? 'Owner' : 'Participant'}
+                        </span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">{new Date(session.updatedAt).toLocaleDateString()}</span>
@@ -263,7 +262,9 @@ const Dashboard = () => {
                       <span className="text-xs text-gray-400 hidden sm:block">ID: {session.id}</span>
                       <div className="flex items-center space-x-2 min-w-[80px]">
                         <Users className="w-3 h-3 text-gray-500" />
-                        <span className="text-xs text-gray-400">1 member</span>
+                        <span className="text-xs text-gray-400">
+                          {session.userId === user?.id ? 'Owner' : 'Participant'}
+                        </span>
                       </div>
                       <button onClick={(e) => handleDeleteRoom(e, session.id)} className="text-gray-500 hover:text-red-500 transition-colors" title="Delete Session">
                         <Trash2 className="w-4 h-4" />
