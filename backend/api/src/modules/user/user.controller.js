@@ -80,14 +80,14 @@ router.put('/profile', verifyToken, async (req, res) => {
     
     
     const token = jwt.sign(
-      { id: updatedUser._id.toString(), email: updatedUser.email, name: updatedUser.name, avatar: updatedUser.avatar },
+      { id: updatedUser._id.toString(), email: updatedUser.email, name: updatedUser.name, avatar: updatedUser.avatar, createdAt: updatedUser.createdAt },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
     
     res.json({
       token,
-      user: { id: updatedUser._id.toString(), email: updatedUser.email, name: updatedUser.name, avatar: updatedUser.avatar }
+      user: { id: updatedUser._id.toString(), email: updatedUser.email, name: updatedUser.name, avatar: updatedUser.avatar, createdAt: updatedUser.createdAt }
     });
   } catch (error) {
     console.error('Error updating profile:', error);

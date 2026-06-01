@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
     });
 
     const token = jwt.sign(
-      { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar },
+      { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar, createdAt: user.createdAt },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -41,7 +41,7 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
       token,
-      user: { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar },
+      user: { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar, createdAt: user.createdAt },
     });
   } catch (error) {
     console.error('Registration error:', error);
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar },
+      { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar, createdAt: user.createdAt },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -77,7 +77,7 @@ router.post('/login', async (req, res) => {
 
     res.json({
       token,
-      user: { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar },
+      user: { id: user._id.toString(), email: user.email, name: user.name, avatar: user.avatar, createdAt: user.createdAt },
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -154,7 +154,7 @@ router.get(
   passport.authenticate('google', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     const token = jwt.sign(
-      { id: req.user._id.toString(), email: req.user.email, name: req.user.name, avatar: req.user.avatar },
+      { id: req.user._id.toString(), email: req.user.email, name: req.user.name, avatar: req.user.avatar, createdAt: req.user.createdAt },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -169,7 +169,7 @@ router.get(
   passport.authenticate('github', { session: false, failureRedirect: '/login' }),
   (req, res) => {
     const token = jwt.sign(
-      { id: req.user._id.toString(), email: req.user.email, name: req.user.name, avatar: req.user.avatar },
+      { id: req.user._id.toString(), email: req.user.email, name: req.user.name, avatar: req.user.avatar, createdAt: req.user.createdAt },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
